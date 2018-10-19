@@ -79,10 +79,18 @@ non terminal DeclNode         decl;
 non terminal VarDeclNode      varDecl;
 non terminal TypeNode         type;
 non terminal IdNode           id;
+non terminal AssignNode       assignExp;
+non terminal ExpNode          loc;
  
  
 /* NOTE: Add precedence and associativity declarations here */
-
+// ORDER OF precendence is low to high
+// plus and minus are given the lowest precendence
+// 
+// for example
+// precedence left PLUS, MINUS;
+// precedence left TIMES, DIVIDE;
+// 
 
 start with program;
 
@@ -91,6 +99,80 @@ start with program;
  *
  * NOTE: add more grammar rules below
  */
+
+
+
+
+
+
+assignExp       ::= loc:l ASSIGN exp:e
+                {: 
+                    RESULT = new AssignNode(l,e);
+                :}
+                ;
+
+loc             ::= id:i
+                {:
+                    RESULT = i;
+                :}
+                | loc:l DOT id:i
+                {:
+                    RESULT = new DotAccessExpNode(l,i);
+                :}
+                ;
+
+stmt            ::= assignExp:a SEMICOLON
+                {:
+                    RESULT = new AssignStmtNode(a);
+                :}
+                | loc:l PLUSPLUS SEMICOLON
+                {:
+                    RESULT = new PostIncStmtNode(l);
+                :}
+                | loc:l MINUSMINUS SEMICOLON
+                {:
+                    RESULT = new PostDecStmtNode(l);
+                :}
+                | CIN READ loc:l SEMICOLON
+                {:
+                    RESULT = new ReadStmtNode(l);
+                :}
+                | COUT WRITE exp:e SEMICOLON
+                {:
+                    RESULT = new WriteStmtNode(e);
+                :}
+                | IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+                {:
+                    RESULT = new IfStmtNode(e, new DeclListNode(vdl), new StmtListNode(stl));
+                :}
+                | IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl1 stmtList:stl1 RCURLY ELSE LCURLY varDeclList:vdl2 stmtList:stl2 RCURLY
+                {:
+                    RESULT = new IfElseStmtNode(e, new DeclListNode(vdl1), new StmtListNode(stl1), new DeclListNode(vdl2), new StmtListNode(stl2));
+                :}
+                | WHILE LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+                {:
+                    RESULT = new WhileStmtNode(e, new DeclListNode(vdl), new StmtListNode(stl));
+                :}
+                | REPEAT LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+                {:
+                    RESULT = new RepeatStmtNode(e, new DeclListNode(vdl), new StmtListNode(stl));
+                :}
+                | RETURN exp:e SEMICOLON
+                {:
+                    RESULT = new ReturnStmtNode(e);
+                :}
+                | RESULT SEMICOLON
+                {:
+                    RESULT = new ReadStmtNode(null);
+                :}
+                | fncall:fc SEMICOLON
+                {:
+                    RESULT = new CallStmtNode(fc);
+                :}
+                ;
+
+
+    
 program         ::= declList: d
                 {: RESULT = new ProgramNode(new DeclListNode(d));
                 :}
@@ -110,6 +192,17 @@ decl            ::= varDecl:v
                 :}
                 ;
 
+varDeclList     ::= varDeclList:dl varDecl:vd
+                {:
+                    dl.addLast(vd);
+                    RESULT =dl;
+                :}
+                | /* epsilon */
+                {:
+                    RESULT = new LinkedList<DeclNode>();
+                :}
+
+
 varDecl         ::= type:t id:i SEMICOLON
                 {: RESULT = new VarDeclNode(t, i, VarDeclNode.NOT_STRUCT);
                 :}
@@ -117,6 +210,12 @@ varDecl         ::= type:t id:i SEMICOLON
 
 type            ::= INT
                 {: RESULT = new IntNode();
+                :}
+                | BOOL
+                {:	RESULT = new BoolNode();
+                :}
+                | VOID
+                {: RESULT = new VoidNode();
                 :}
                 ;
 

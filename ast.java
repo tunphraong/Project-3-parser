@@ -485,7 +485,7 @@ class ReturnStmtNode extends StmtNode {
     public void unparse(PrintWriter p, int indent) {
     }
 
-    // 1 kid
+    // 1 kids
     private ExpNode exp; // possibly null
 }
 

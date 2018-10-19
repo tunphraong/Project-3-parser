@@ -49,17 +49,17 @@ stmtList        ::= stmtList stmt
                 | /* epsilon */
                 ;
 
-stmt            ::= assignExp SEMICOLON
-                | loc PLUSPLUS SEMICOLON
-                | loc MINUSMINUS SEMICOLON
-                | CIN READ loc SEMICOLON
-                | COUT WRITE exp SEMICOLON
-                | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY
-                | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY ELSE LCURLY varDeclList stmtList RCURLY
-                | WHILE LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY
-		| REPEAT LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY
-                | RETURN exp SEMICOLON
-                | RETURN SEMICOLON
+stmt            ::= assignExp SEMICOLON // done
+                | loc PLUSPLUS SEMICOLON // done
+                | loc MINUSMINUS SEMICOLON // done
+                | CIN READ loc SEMICOLON        // done
+                | COUT WRITE exp SEMICOLON      // done
+                | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY       //done
+                | IF LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY ELSE LCURLY varDeclList stmtList RCURLY // done
+                | WHILE LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY    // done
+		| REPEAT LPAREN exp RPAREN LCURLY varDeclList stmtList RCURLY   // done
+                | RETURN exp SEMICOLON // done
+                | RETURN SEMICOLON // done
                 | fncall SEMICOLON
                 ;
 
