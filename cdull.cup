@@ -73,14 +73,23 @@ terminal                ASSIGN;
  * NOTE: You will need to add more nonterminals to this list as you
  *       add productions to the grammar below.
  */
-non terminal ProgramNode      program;
-non terminal LinkedList       declList;
-non terminal DeclNode         decl;
-non terminal VarDeclNode      varDecl;
-non terminal TypeNode         type;
-non terminal IdNode           id;
-non terminal AssignNode       assignExp;
-non terminal ExpNode          loc;
+non terminal ProgramNode      program;  // done
+non terminal LinkedList       declList; //done
+non terminal DeclNode         decl;     // done
+non terminal VarDeclNode      varDecl;  // done
+non terminal TypeNode         type;     //done
+non terminal IdNode           id;       // done
+non terminal AssignNode       assignExp;    // done
+non terminal ExpNode          loc;      // done
+non terminal StmtNode         stmt;     // done
+non terminal LinkedList       varDeclList;  // done
+non terminal LinkedList       structBody; // done
+non terminal LinkedList       actualList;   // done
+non terminal FormalDeclNode   formalDecl;// done
+non terminal StructDeclNode   structDecl;   // done
+non terminal LinkedList       stmtList;     // done
+non terminal LinkedList       varDeclList;  // done
+
  
  
 /* NOTE: Add precedence and associativity declarations here */
@@ -88,8 +97,8 @@ non terminal ExpNode          loc;
 // plus and minus are given the lowest precendence
 // 
 // for example
-// precedence left PLUS, MINUS;
-// precedence left TIMES, DIVIDE;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIVIDE;
 // 
 
 start with program;
@@ -100,9 +109,18 @@ start with program;
  * NOTE: add more grammar rules below
  */
 
-
-
-
+actualList      ::= exp:e
+                {:
+                    LinkedList<ExpNode> list = new LinkedList<ExpNode>();
+                    list.addLast(e);
+                    RESULT = list;
+                :}
+                | actualList:al COMMA exp:e
+                {:
+                    al.addLast(e);
+                    RESULT = al;
+                :}
+                ;
 
 
 assignExp       ::= loc:l ASSIGN exp:e
@@ -187,6 +205,7 @@ declList        ::= declList:dl decl:d
                 :}
                 ;
 
+
 decl            ::= varDecl:v
                 {: RESULT = v;
                 :}
@@ -202,11 +221,53 @@ varDeclList     ::= varDeclList:dl varDecl:vd
                     RESULT = new LinkedList<DeclNode>();
                 :}
 
+stmtList        ::= stmtList:stl stmt:st
+                {:
+                    stl.addLast(st);
+                    RESULT = stl;
+                :}
+                | /* epsilon */
+                {:
+                    RESULT = new LinkedList<StmtNode>();
+                :}
 
-varDecl         ::= type:t id:i SEMICOLON
-                {: RESULT = new VarDeclNode(t, i, VarDeclNode.NOT_STRUCT);
+formalDecl      ::= type:t id:i      // note: no struct parameters
+                {:
+                    RESULT = new FormalDeclNode(t, i);
                 :}
                 ;
+
+
+structBody      ::= structBody:sb varDecl:vd
+                {:
+                    sb.addLast(vd);
+                    RESULT = sb;
+                :}
+                | varDecl:vd
+                {:
+                    LinkedList<DeclNode>() list = new LinkedList<DeclNode>();
+                    list.addLast(vd);
+                    RESULT = list;
+                :}
+                ;
+
+structDecl      ::= STRUCT id:i LCURLY structBody:strb RCURLY SEMICOLON
+                {:
+                    RESULT = new StructDeclNode(i, new DeclListNode(strb) );
+                :}
+                ;
+
+
+varDecl         ::= type:t id:i SEMICOLON
+                {: 
+                    RESULT = new VarDeclNode(t, i, VarDeclNode.NOT_STRUCT);
+                :}
+                | STRUCT id:i1 id:i2 SEMICOLON               
+                {:
+                    RESULT = new VarDeclNode(new StructNode(i1), i2, 0);
+                :}
+                ;
+
 
 type            ::= INT
                 {: RESULT = new IntNode();
