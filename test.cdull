@@ -1,2 +1,10 @@
 int x;
 int y;
+void x;
+void y;
+bool bool_1;
+bool bool_2;
+ struct a{  
+       int a; int b;
+                    int c;
+		  };

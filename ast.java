@@ -277,6 +277,18 @@ class StructDeclNode extends DeclNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        // STRUCT id:i LCURLY structBody:strb RCURLY SEMICOLON
+        // RESULT = new StructDeclNode(i, new DeclListNode(strb) );
+        printSpace(p, indent);
+        p.print("struct");
+        p.print(" ");
+        this.id.unparse(p, indent);
+        p.print(" ");
+        p.print("{");
+        p.print("\n");
+        this.declList.unparse(p, indent + 4);
+        p.print("}");
+        p.println(";");
     }
 
     // 2 kids
@@ -305,6 +317,7 @@ class BoolNode extends TypeNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        p.print("bool");
     }
 }
 
@@ -313,6 +326,7 @@ class VoidNode extends TypeNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        p.print("void");
     }
 }
 
@@ -322,6 +336,9 @@ class StructNode extends TypeNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        p.print("struct");
+        p.print(" ");
+	    this.id.unparse(p,indent);
     }
 	
 	// 1 kid
@@ -485,7 +502,7 @@ class ReturnStmtNode extends StmtNode {
     public void unparse(PrintWriter p, int indent) {
     }
 
-    // 1 kids
+    // 1 kid
     private ExpNode exp; // possibly null
 }
 
