@@ -296,7 +296,6 @@ class FnDeclNode extends DeclNode {
             p.print("id is null ");
         else
             id.unparse(p, indent);
-        //p.print(" ");
         if(formalList == null)
             p.print("list is null");
         else
