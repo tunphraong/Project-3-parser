@@ -816,9 +816,9 @@ class PlusNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" + ");
-        myExp2.unparse(p, indent);
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
@@ -837,9 +837,9 @@ class MinusNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" - ");
-        myExp2.unparse(p, indent);
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
@@ -857,9 +857,9 @@ class TimesNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" * ");
-        myExp2.unparse(p, indent);
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
@@ -877,9 +877,9 @@ class DivideNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" / ");
-        myExp2.unparse(p, indent);
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
@@ -897,9 +897,9 @@ class AndNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" && ");
-        myExp2.unparse(p, indent);
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
@@ -917,9 +917,9 @@ class OrNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" || ");
-        myExp2.unparse(p, indent);
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
@@ -937,10 +937,10 @@ class EqualsNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" == ");
-        myExp2.isP = true;
-        myExp2.unparse(p, indent);
+        exp2.isP = true;
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
@@ -958,9 +958,9 @@ class NotEqualsNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" != ");
-        myExp2.unparse(p, indent);
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
@@ -978,9 +978,9 @@ class LessNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" < ");
-        myExp2.unparse(p, indent);
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
@@ -998,9 +998,9 @@ class GreaterNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" > ");
-        myExp2.unparse(p, indent);
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
@@ -1018,9 +1018,9 @@ class LessEqNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" <= ");
-        myExp2.unparse(p, indent);
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
@@ -1038,9 +1038,9 @@ class GreaterEqNode extends BinaryExpNode {
             p.print("(");
         }
         p.print("(");
-        myExp1.unparse(p, indent);
+        exp1.unparse(p, indent);
         p.print(" >= ");
-        myExp2.unparse(p, indent);
+        exp2.unparse(p, indent);
         p.print(")");
         if(isP) {
             p.print(")");
