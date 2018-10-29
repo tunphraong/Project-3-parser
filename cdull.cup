@@ -73,28 +73,28 @@ terminal                ASSIGN;
  * NOTE: You will need to add more nonterminals to this list as you
  *       add productions to the grammar below.
  */
-non terminal ProgramNode      program; // DONE
-non terminal LinkedList       declList; // 
-non terminal DeclNode         decl;       // 
-non terminal VarDeclNode      varDecl;    // DONE
-non terminal TypeNode         type;       // DONE 
-non terminal IdNode           id;         // DONE 
-non terminal LinkedList       structBody; //    
-non terminal StructDeclNode   structDecl;   //   
-non terminal LinkedList       actualList;   // 
-non terminal AssignNode       assignExp;   // 
-non terminal ExpNode          exp;
-non terminal ExpNode          loc;      // 
-non terminal ExpNode          term;
-non terminal FormalsListNode  formals;
-non terminal LinkedList       formalsList;
-non terminal FnBodyNode       fnBody;
-non terminal LinkedList       varDeclList;
-non terminal StmtNode         stmt;
-non terminal LinkedList       stmtList;
-non terminal  FnDeclNode        fnDecl;
-non terminal CallExpNode      fncall;
-non terminal FormalDeclNode formalDecl;
+non terminal ProgramNode      program;          // DONE
+non terminal LinkedList       declList;       //  DONE
+non terminal DeclNode         decl;             // done
+non terminal VarDeclNode      varDecl;          // DONE
+non terminal TypeNode         type;             // DONE 
+non terminal IdNode           id;               // DONE 
+non terminal LinkedList       structBody;       //  DONE
+non terminal StructDeclNode   structDecl;        //   DONE
+non terminal LinkedList       actualList;        // 
+non terminal AssignNode       assignExp;        // DONE
+non terminal ExpNode          exp;            
+non terminal ExpNode          loc;            // DONE
+non terminal ExpNode          term;           // DONE
+non terminal FormalsListNode  formals;          // DONE
+non terminal LinkedList       formalsList;      // DONE
+non terminal FnBodyNode       fnBody;         // DONE
+non terminal LinkedList       varDeclList;    // DONE
+non terminal StmtNode         stmt;           // DONE
+non terminal LinkedList       stmtList;       // DONE
+non terminal  FnDeclNode        fnDecl;       // DONE
+non terminal CallExpNode      fncall;         // DONE
+non terminal FormalDeclNode formalDecl;       // DONE
 
 
 
@@ -158,55 +158,55 @@ exp             ::= assignExp:as
                 {:
                   RESULT = as;
                 :}
-                | exp:e1 PLUS exp:e2
+                | exp:e1 PLUS exp:e2  // DONE
                 {:
                   RESULT = new PlusNode(e1, e2);
                 :}
-                | exp:e1 MINUS exp:e2
+                | exp:e1 MINUS exp:e2   // DONE
                 {:
                   RESULT = new MinusNode(e1, e2);
                 :}
-                | exp:e1 TIMES exp:e2
+                | exp:e1 TIMES exp:e2   // DONE
                 {:
                   RESULT = new TimesNode(e1, e2);
                 :}
-                | exp:e1 DIVIDE exp:e2
+                | exp:e1 DIVIDE exp:e2  // DONE
                 {:
                   RESULT = new DivideNode(e1, e2);
                 :}
-                | NOT exp:e
+                | NOT exp:e // DONE
                 {:
                   RESULT = new NotNode(e);
                 :}
-                | exp:e1 AND exp:e2
+                | exp:e1 AND exp:e2 // DONE
                 {:
                   RESULT = new AndNode(e1, e2);
                 :}
-                | exp:e1 OR exp:e2
+                | exp:e1 OR exp:e2  // DONE
                 {:
                   RESULT = new OrNode(e1, e2);
                 :}
-                | exp:e1 EQUALS exp:e2
+                | exp:e1 EQUALS exp:e2 // DONE
                 {:
                   RESULT = new EqualsNode(e1, e2);
                 :}
-                | exp:e1 NOTEQUALS exp:e2
+                | exp:e1 NOTEQUALS exp:e2 // DONE
                 {:
                   RESULT = new NotEqualsNode(e1, e2);
                 :}
-                | exp:e1 LESS exp:e2
+                | exp:e1 LESS exp:e2    // DONE
                 {:
                   RESULT = new LessNode(e1, e2);
                 :}
-                | exp:e1 GREATER exp:e2
+                | exp:e1 GREATER exp:e2   // DONE
                 {:
                   RESULT = new GreaterNode(e1, e2);
                 :}
-                | exp:e1 LESSEQ exp:e2
+                | exp:e1 LESSEQ exp:e2  // DONE
                 {:
                   RESULT = new LessEqNode(e1, e2);
                 :}
-                | exp:e1 GREATEREQ exp:e2
+                | exp:e1 GREATEREQ exp:e2 // DONE
                 {:
                   RESULT = new GreaterEqNode(e1, e2);
                 :}
@@ -241,51 +241,53 @@ varDeclList     ::= varDeclList:dl varDecl:vd
                 :}
                 ;
 
-stmt            ::= assignExp:a SEMICOLON
+stmt            ::= assignExp:a SEMICOLON     // done
                 {:
                     RESULT = new AssignStmtNode(a);
                 :}
-                | loc:l PLUSPLUS SEMICOLON
+                | loc:l PLUSPLUS SEMICOLON      // done
                 {:
                     RESULT = new PostIncStmtNode(l);
                 :}
-                | loc:l MINUSMINUS SEMICOLON
+                | loc:l MINUSMINUS SEMICOLON    //done
                 {:
                     RESULT = new PostDecStmtNode(l);
                 :}
-                | CIN READ loc:l SEMICOLON
+                | CIN READ loc:l SEMICOLON    // done
                 {:
                     RESULT = new ReadStmtNode(l);
                 :}
-                | COUT WRITE exp:e SEMICOLON
+                | COUT WRITE exp:e SEMICOLON    // done
                 {:
                     RESULT = new WriteStmtNode(e);
                 :}
-                | IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+                | IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY // DONE
                 {:
                     RESULT = new IfStmtNode(e, new DeclListNode(vdl), new StmtListNode(stl));
                 :}
-                | IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl1 stmtList:stl1 RCURLY ELSE LCURLY varDeclList:vdl2 stmtList:stl2 RCURLY
+                | IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl1 stmtList:stl1 
+                  RCURLY ELSE LCURLY varDeclList:vdl2 stmtList:stl2 RCURLY // DONE
                 {:
-                    RESULT = new IfElseStmtNode(e, new DeclListNode(vdl1), new StmtListNode(stl1), new DeclListNode(vdl2), new StmtListNode(stl2));
+                    RESULT = new IfElseStmtNode(e, new DeclListNode(vdl1),
+                    new StmtListNode(stl1), new DeclListNode(vdl2), new StmtListNode(stl2));
                 :}
-                | WHILE LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+                | WHILE LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY  // DONE
                 {:
                     RESULT = new WhileStmtNode(e, new DeclListNode(vdl), new StmtListNode(stl));
                 :}
-                | REPEAT LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+                | REPEAT LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY   // DONE
                 {:
                     RESULT = new RepeatStmtNode(e, new DeclListNode(vdl), new StmtListNode(stl));
                 :}
-                | RETURN exp:e SEMICOLON
+                | RETURN exp:e SEMICOLON    // DONE
                 {:
                     RESULT = new ReturnStmtNode(e);
                 :}
-                | RETURN SEMICOLON
+                | RETURN SEMICOLON      // DONE
                 {:
                     RESULT = new ReturnStmtNode(null);
                 :}
-                | fncall:fc SEMICOLON
+                | fncall:fc SEMICOLON     // DONE
                 {:
                     RESULT = new CallStmtNode(fc);
                 :}

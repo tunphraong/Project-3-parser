@@ -10,3 +10,116 @@ struct new_struct {
       int a;
 bool b;
 };
+
+// test fnDecl ---- type id formals fnBody 
+
+
+### case formals: LPAREN RPAREN
+// case fnBody: varDeclList and stmtList are empty
+
+
+int a () {} // 
+
+### case formals: LPAREN formalsList RPAREN
+
+// formalsList: formalDecl
+// formalsDecl: type id
+
+int a (int b) {}
+
+### case: fnBody is not empty
+### fnBody ::= LCURLY varDeclList:vdl stmtList:sl RCURLY
+
+int a (int b) {
+      
+      int a;
+      bool b;
+      ### case: test all stmt
+      ### test assignExp
+            a = 1;
+      ### test loc:l PLUSPLUS SEMICOLON
+      a++;
+      ### test loc:l MINUSMINUS SEMICOLON
+      a--;
+      ### test CIN READ loc:l SEMICOLON    
+      cin >> a;
+      ### COUT WRITE exp:e SEMICOLON       
+      cout << a;
+      ### test IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+      # case: varDeclList and stmtList are empty
+      if (a) {}
+
+      # case: varDeclList and stmtList are not empty
+      if (a) {
+      int b;
+            b = b + 1;
+      }
+      ### test if else: | IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl1 stmtList:stl1 
+      ###        RCURLY ELSE LCURLY varDeclList:vdl2 stmtList:stl2 RCURLY
+
+      if(b) {
+            int a;
+            void b;
+            b++;
+      } else {
+            int c;
+            void d;
+            d--;
+      }
+
+      ### test while : WHILE LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+
+      while (a != 0) {
+            bool b;
+            cin >> b;
+      }
+
+      ### case test repeat: REPEAT LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+
+      repeat ( b == 0 ) {
+            bool d;
+            void eed;
+            cout << eed;
+      }
+
+      ### test RETURN exp:e SEMICOLON    
+      return e;
+      return ;
+
+      ### test fncall:fc SEMICOLON
+      # id:i LPAREN RPAREN   // fn call with no args
+      a();
+      # id:i LPAREN actualList:al RPAREN  // with args
+      # test actualList
+      a(a+1, b);
+
+      ### test case : exp node
+      return a+1;
+      return a-1;
+      return 64 * 32;
+      return 32 / 32;
+      return !a;
+      return a&&b;
+      return a||b;
+      return a==b;
+      return a!= b;
+      return a <b;
+      return a >b;
+      return a <= b;
+      return a >= ca;
+      return -a;
+
+      # test term
+
+      return false;
+      return true;
+      return "TEST STRING";
+      return 13123;
+      
+
+
+
+      
+
+}
+
