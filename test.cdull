@@ -1,10 +1,33 @@
+// test varDecl
 int x;
-int y;
+      int y;
 void x;
-void y;
-bool bool_1;
+
+void y; bool bool_1;
 bool bool_2;
- struct a{  
-       int a; int b;
-                    int c;
-		  };
+struct x y;
+
+
+// test struct
+struct x {
+      int a;
+};
+
+// test decl
+
+
+
+// fnDecl          ::= type id formals fnBody
+// formals         ::= LPAREN RPAREN
+//                | LPAREN formalsList RPAREN
+//                ;
+//fnBody          ::= LCURLY varDeclList stmtList RCURLY
+//                 ;
+
+int f (int b, void c) {}
+
+
+// test assignEXP = loc ASSIGN exp
+// test loc : loc DOT id
+
+

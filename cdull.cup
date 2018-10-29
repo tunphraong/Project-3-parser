@@ -79,8 +79,8 @@ non terminal DeclNode         decl;       // done
 non terminal VarDeclNode      varDecl;    // done TEST
 non terminal TypeNode         type;       // done TEST
 non terminal IdNode           id;         // done TEST
-non terminal LinkedList       structBody; // done
-non terminal StructDeclNode   structDecl;   // done
+non terminal LinkedList       structBody; // done   TEST
+non terminal StructDeclNode   structDecl;   // done TEST 
 non terminal LinkedList       actualList;   // done
 non terminal AssignNode       assignExp;   // done
 non terminal ExpNode          exp;
@@ -90,6 +90,7 @@ non terminal FormalsListNode  formals;
 non terminal LinkedList       formalsList;
 non terminal FnBodyNode       fnBody;
 non terminal LinkedList       varDeclList;
+non terminal StmtNode         stmt;
 non terminal LinkedList       stmtList;
 non terminal  FnDeclNode        fnDecl;
 non terminal CallExpNode      fncall;
@@ -228,15 +229,6 @@ declList        ::= declList:dl decl:d
                 :}
                 ;
 
-formals         ::= LPAREN RPAREN
-                {:
-                  RESULT = new FormalsListNode(new LinkedList<FormalDeclNode>());
-                :}
-                | LPAREN formalsList:fl RPAREN
-                {:
-                  RESULT = new FormalsListNode(fl);
-                :}
-                ;
 
 varDeclList     ::= varDeclList:dl varDecl:vd
                 {:
@@ -249,9 +241,92 @@ varDeclList     ::= varDeclList:dl varDecl:vd
                 :}
                 ;
 
+stmt            ::= assignExp:a SEMICOLON
+                {:
+                    RESULT = new AssignStmtNode(a);
+                :}
+                | loc:l PLUSPLUS SEMICOLON
+                {:
+                    RESULT = new PostIncStmtNode(l);
+                :}
+                | loc:l MINUSMINUS SEMICOLON
+                {:
+                    RESULT = new PostDecStmtNode(l);
+                :}
+                | CIN READ loc:l SEMICOLON
+                {:
+                    RESULT = new ReadStmtNode(l);
+                :}
+                | COUT WRITE exp:e SEMICOLON
+                {:
+                    RESULT = new WriteStmtNode(e);
+                :}
+                | IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+                {:
+                    RESULT = new IfStmtNode(e, new DeclListNode(vdl), new StmtListNode(stl));
+                :}
+                | IF LPAREN exp:e RPAREN LCURLY varDeclList:vdl1 stmtList:stl1 RCURLY ELSE LCURLY varDeclList:vdl2 stmtList:stl2 RCURLY
+                {:
+                    RESULT = new IfElseStmtNode(e, new DeclListNode(vdl1), new StmtListNode(stl1), new DeclListNode(vdl2), new StmtListNode(stl2));
+                :}
+                | WHILE LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+                {:
+                    RESULT = new WhileStmtNode(e, new DeclListNode(vdl), new StmtListNode(stl));
+                :}
+                | REPEAT LPAREN exp:e RPAREN LCURLY varDeclList:vdl stmtList:stl RCURLY
+                {:
+                    RESULT = new RepeatStmtNode(e, new DeclListNode(vdl), new StmtListNode(stl));
+                :}
+                | RETURN exp:e SEMICOLON
+                {:
+                    RESULT = new ReturnStmtNode(e);
+                :}
+                | RETURN SEMICOLON
+                {:
+                    RESULT = new ReturnStmtNode(null);
+                :}
+                | fncall:fc SEMICOLON
+                {:
+                    RESULT = new CallStmtNode(fc);
+                :}
+                ;
+
+
+
 fnBody          ::= LCURLY varDeclList:vdl stmtList:sl RCURLY
                 {:
                   RESULT = new FnBodyNode(new DeclListNode(vdl), new StmtListNode(sl));
+                :}
+                ;
+
+formalDecl      ::= type:t id:i        // note: no struct parameters
+                {:
+                  RESULT = new FormalDeclNode(t,i);
+                :}
+                ;
+
+
+formals         ::= LPAREN RPAREN
+                {:
+                  RESULT = new FormalsListNode(new LinkedList<FormalDeclNode>());
+                :}
+                | LPAREN formalsList:fl RPAREN
+                {:
+                  RESULT = new FormalsListNode(fl);
+                :}
+                ;
+
+
+formalsList     ::= formalDecl:fdl
+                {:
+                  LinkedList<FormalDeclNode> l = new LinkedList<FormalDeclNode>();
+                  l.addFirst(fdl);
+                  RESULT = l;
+                :}
+                | formalDecl:fd COMMA formalsList:fl
+                {:
+                  fl.addFirst(fd);
+                  RESULT = fl;
                 :}
                 ;
 
@@ -351,22 +426,3 @@ id              ::= ID:i
                 :}
                 ;
 
-formalDecl      ::= type:t id:i        // note: no struct parameters
-                {:
-                  RESULT = new FormalDeclNode(t,i);
-                :}
-                ;
-
-
-formalsList     ::= formalDecl:fdl
-                {:
-                  LinkedList<FormalDeclNode> l = new LinkedList<FormalDeclNode>();
-                  l.addFirst(fdl);
-                  RESULT = l;
-                :}
-                | formalDecl:fd COMMA formalsList:fl
-                {:
-                  fl.addFirst(fd);
-                  RESULT = fl;
-                :}
-                ;

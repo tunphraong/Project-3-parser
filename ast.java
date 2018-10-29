@@ -188,10 +188,10 @@ class FnBodyNode extends ASTnode {
 
     public void unparse(PrintWriter p, int indent) {
         p.println("{");
-        if(declList != null)
-            declList.unparse(p,indent + 4);
-        if(stmtList != null)
-            stmtList.unparse(p,indent + 4);
+        if(this.declList != null)
+            this.declList.unparse(p,indent + 4);
+        if(this.stmtList != null)
+            this.stmtList.unparse(p,indent + 4);
         p.println("}");
     }
 
@@ -287,15 +287,15 @@ class FnDeclNode extends DeclNode {
 
     public void unparse(PrintWriter p, int indent) {
         printSpace(p, indent);
-        if(type == null)
+        if(this.type == null)
             p.print("type is null ");
         else
-            type.unparse(p, indent);
+            this.type.unparse(p, indent);
         p.print(" ");
-        if(id == null)
+        if(this.id == null)
             p.print("id is null ");
         else
-            id.unparse(p, indent);
+            this.id.unparse(p, indent);
         if(formalsList == null)
             p.print("list is null");
         else
@@ -323,9 +323,9 @@ class FormalDeclNode extends DeclNode {
 
     public void unparse(PrintWriter p, int indent) {
         printSpace(p,indent);
-        type.unparse(p, indent);
+        this.type.unparse(p, indent);
         p.print(" ");
-        id.unparse(p, indent);
+        this.id.unparse(p, indent);
     }
 
     // 2 kids
@@ -421,6 +421,8 @@ class AssignStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        this.assign.unparse(p,indent);
+        p.println(";");
     }
 
     // 1 kid
@@ -433,6 +435,8 @@ class PostIncStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        this.exp.unparse(p, indent);
+        p.print("++;");
     }
 
     // 1 kid
@@ -445,6 +449,8 @@ class PostDecStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        this.exp.unparse(p, indent);
+        p.print("--;");
     }
 
     // 1 kid
@@ -483,6 +489,14 @@ class IfStmtNode extends StmtNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        printSpace(p, indent);
+        p.print("if (");
+        exp.unparse(p, indent);
+        p.print(") {");
+        declList.unparse(p, indent + 4);
+        stmtList.unparse(p, indent + 4);
+        p.print("}");
+        printSpace(p, indent);
     }
 
     // e kids
