@@ -140,8 +140,52 @@ formalDecl      ::= type:t id:i      // note: no struct parameters
                 ;
 
 
+structBody      ::= structBody:sb varDecl:vd
+                {:
+                    sb.addLast(vd);
+                    RESULT = sb;
+                :}
+                | varDecl:vd
+                {:
+                    LinkedList<DeclNode>() list = new LinkedList<DeclNode>();
+                    list.addLast(vd);
+                    RESULT = list;
+                :}
+                ;
+
+structDecl      ::= STRUCT id:i LCURLY structBody:strb RCURLY SEMICOLON
+                {:
+                    RESULT = new StructDeclNode(i, new DeclListNode(strb) );
+                :}
+                ;
 
 
+varDecl         ::= type:t id:i SEMICOLON
+                {: 
+                    RESULT = new VarDeclNode(t, i, VarDeclNode.NOT_STRUCT);
+                :}
+                | STRUCT id:i1 id:i2 SEMICOLON               
+                {:
+                    RESULT = new VarDeclNode(new StructNode(i1), i2, 0);
+                :}
+                ;
+
+
+type            ::= INT
+                {: RESULT = new IntNode();
+                :}
+                | BOOL
+                {:	RESULT = new BoolNode();
+                :}
+                | VOID
+                {: RESULT = new VoidNode();
+                :}
+                ;
+
+id              ::= ID:i
+                {: RESULT = new IdNode(i.linenum, i.charnum, i.idVal);
+                :}
+                ;
 		
 exp             ::= assignExp:as
                 {:
