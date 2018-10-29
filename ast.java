@@ -189,9 +189,9 @@ class FnBodyNode extends ASTnode {
     public void unparse(PrintWriter p, int indent) {
         p.println("{");
         if(declList != null)
-            declList.unparse(p,indent + TAB);
+            declList.unparse(p,indent + 4);
         if(stmtList != null)
-            stmtList.unparse(p,indent + TAB);
+            stmtList.unparse(p,indent + 4);
         p.println("}");
     }
 
@@ -296,15 +296,15 @@ class FnDeclNode extends DeclNode {
             p.print("id is null ");
         else
             id.unparse(p, indent);
-        if(formalList == null)
+        if(formalsList == null)
             p.print("list is null");
         else
-            formalList.unparse(p, indent);
+            formalsList.unparse(p, indent);
         p.print(" ");
-        if(body == null)
+        if(fnBody == null)
             p.print("body is null");
         else
-            body.unparse(p, indent);
+            fnBody.unparse(p, indent);
         p.println();
     }
 
@@ -629,9 +629,14 @@ class TrueNode extends ExpNode {
     }
 
     public void unparse(PrintWriter p, int indent) {
+        if(isP){
+            p.print("(");
+        }
+        p.print("true");
+        if(isP){
+            p.print(")");
+        }
     }
-
-}
 
     private int lineNum;
     private int charNum;
@@ -653,7 +658,6 @@ class FalseNode extends ExpNode {
         }
     }
 
-}
 
     private int lineNum;
     private int charNum;
