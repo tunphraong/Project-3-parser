@@ -73,18 +73,18 @@ terminal                ASSIGN;
  * NOTE: You will need to add more nonterminals to this list as you
  *       add productions to the grammar below.
  */
-non terminal ProgramNode      program; // done
-non terminal LinkedList       declList; // done
-non terminal DeclNode         decl;       // done
-non terminal VarDeclNode      varDecl;    // done TEST
-non terminal TypeNode         type;       // done TEST
-non terminal IdNode           id;         // done TEST
-non terminal LinkedList       structBody; // done   TEST
-non terminal StructDeclNode   structDecl;   // done TEST 
-non terminal LinkedList       actualList;   // done
-non terminal AssignNode       assignExp;   // done
+non terminal ProgramNode      program; // DONE
+non terminal LinkedList       declList; // 
+non terminal DeclNode         decl;       // 
+non terminal VarDeclNode      varDecl;    // DONE
+non terminal TypeNode         type;       // DONE 
+non terminal IdNode           id;         // DONE 
+non terminal LinkedList       structBody; //    
+non terminal StructDeclNode   structDecl;   //   
+non terminal LinkedList       actualList;   // 
+non terminal AssignNode       assignExp;   // 
 non terminal ExpNode          exp;
-non terminal ExpNode          loc;      // done
+non terminal ExpNode          loc;      // 
 non terminal ExpNode          term;
 non terminal FormalsListNode  formals;
 non terminal LinkedList       formalsList;
@@ -292,6 +292,27 @@ stmt            ::= assignExp:a SEMICOLON
                 ;
 
 
+fncall          ::=  id:i LPAREN RPAREN   // fn call with no args
+		            {:
+		              RESULT = new CallExpNode(i);
+		            :} 
+                | id:i LPAREN actualList:al RPAREN  // with args
+		            {:
+		              RESULT = new CallExpNode(i, new ExpListNode(al));
+		            :} 
+                ;
+
+stmtList        ::= stmtList:sl stmt:s
+		            {:
+		              sl.addLast(s);
+		              RESULT = sl;
+		            :} 
+                | /* epsilon */
+		            {:
+		              LinkedList<StmtNode> sl = new LinkedList<StmtNode>();
+  		            RESULT = sl;
+		            :} 
+                ;
 
 fnBody          ::= LCURLY varDeclList:vdl stmtList:sl RCURLY
                 {:
